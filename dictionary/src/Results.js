@@ -59,8 +59,11 @@ export default function Results({ payload }) {
     <section aria-label="Dictionary results">
       <header>
         <h2>{word}</h2>
-        {phoneticText ? <p>/{phoneticText}/</p> : null}
-        {phoneticsArr.length > 0 ? <Phonetics items={phoneticsArr} /> : null}
+        <Phonetics
+          word={word}
+          phoneticText={phoneticText}
+          items={phoneticsArr}
+        />
       </header>
 
       {groups.map((g, i) => (

@@ -1,20 +1,26 @@
 import React from "react";
 import AudioButton from "./AudioButton";
 
-export default function Phonetics({ items }) {
-  // items: [{ text, audio }, ...]
-  const valid = Array.isArray(items) ? items.filter(Boolean) : [];
+export default function Phonetics({
+  items = [],
+  phoneticText = "",
+  word = "",
+}) {
+  // Try to find the first IPA text and audio URL if provided by the API
+  const firstText =
+    phoneticText ||
+    (Array.isArray(items) ? items.map((p) => p?.text).find(Boolean) : "") ||
+    "";
 
-  if (!valid.length) return null;
+  const firstAudio =
+    (Array.isArray(items) ? items.map((p) => p?.audio).find(Boolean) : "") ||
+    "";
 
   return (
-    <div aria-label="Pronunciation">
-      {valid.map((p, i) => (
-        <div key={i}>
-          {p?.text ? <span>{p.text} </span> : null}
-          {p?.audio ? <AudioButton src={p.audio} /> : null}
-        </div>
-      ))}
+    <div>
+      {firstText ? <span>/{firstText}/ </span> : null}
+      {/* Always render a pronounce button: uses audio if present, else TTS */}
+      <AudioButton src={firstAudio} text={word} />
     </div>
   );
 }
