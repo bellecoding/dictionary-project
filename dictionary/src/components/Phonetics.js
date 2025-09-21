@@ -6,7 +6,6 @@ export default function Phonetics({
   phoneticText = "",
   word = "",
 }) {
-  // Try to find the first IPA text and audio URL if provided by the API
   const firstText =
     phoneticText ||
     (Array.isArray(items) ? items.map((p) => p?.text).find(Boolean) : "") ||
@@ -17,10 +16,9 @@ export default function Phonetics({
     "";
 
   return (
-    <div>
-      {firstText ? <span>/{firstText}/ </span> : null}
-      {/* Always render a pronounce button: uses audio if present, else TTS */}
+    <>
+      {firstText ? <span>/{firstText}/</span> : null}
       <AudioButton src={firstAudio} text={word} />
-    </div>
+    </>
   );
 }

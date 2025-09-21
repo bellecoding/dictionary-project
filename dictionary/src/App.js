@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "./App.css";
 import SearchForm from "./SearchForm";
 import Results from "./Results";
 
@@ -25,14 +26,7 @@ export default function App() {
     try {
       const url = `${API_BASE}?word=${encodeURIComponent(q)}&key=${API_KEY}`;
       const res = await fetch(url);
-      if (!res.ok) {
-        let msg = `${res.status} ${res.statusText}`;
-        try {
-          const j = await res.json();
-          msg = j?.message || j?.error || msg;
-        } catch {}
-        throw new Error(msg);
-      }
+      if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
       const json = await res.json();
       setData(json);
     } catch (err) {
@@ -43,28 +37,26 @@ export default function App() {
   }
 
   return (
-    <div className="App">
-      <h1>Dictionary</h1>
+    <div className="Shell">
+      <main className="container">
+        <SearchForm defaultValue={query} onSearch={handleSearch} />
 
-      <SearchForm
-        defaultValue={query}
-        onSearch={(word) => handleSearch(word)}
-      />
+        {loading && (
+          <div className="card">
+            <p>Searching…</p>
+          </div>
+        )}
+        {error && (
+          <div className="card">
+            <p>
+              <strong>Error:</strong> {error}
+            </p>
+          </div>
+        )}
+        {data && <Results payload={data} />}
+      </main>
 
-      {loading && <p>Loading…</p>}
-      {error && (
-        <p>
-          Error: <strong>{error}</strong>
-        </p>
-      )}
-      {!loading && !error && submitted && !data && (
-        <p>
-          No data yet for: <strong>{submitted}</strong>
-        </p>
-      )}
-      {data && <Results payload={data} />}
-
-      <footer>
+      <footer className="site-footer">
         <small>
           This project was coded by <strong>Belle Coding</strong> and is{" "}
           <a

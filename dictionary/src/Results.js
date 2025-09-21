@@ -8,82 +8,60 @@ export default function Results({ payload }) {
   const phoneticsArr = Array.isArray(payload?.phonetics)
     ? payload.phonetics
     : [];
-  const sources = Array.isArray(payload?.sourceUrls) ? payload.sourceUrls : [];
 
-  // Normalize & group meanings by part of speech
   const groups = useMemo(() => {
     const arr = Array.isArray(payload?.meanings) ? payload.meanings : [];
     const byPOS = new Map();
-
     arr.forEach((m) => {
       const pos = m?.partOfSpeech || "other";
-      const group = byPOS.get(pos) || {
+      const g = byPOS.get(pos) || {
         partOfSpeech: pos,
         items: [],
         synonyms: new Set(),
       };
-
-      // Shape A: { definitions: [{ definition, example, synonyms }] }
       if (Array.isArray(m?.definitions)) {
         m.definitions.forEach((d) => {
           if (d?.definition) {
-            group.items.push({
+            g.items.push({
               definition: d.definition,
               example: d.example || "",
             });
             if (Array.isArray(d?.synonyms))
-              d.synonyms.forEach((s) => group.synonyms.add(s));
+              d.synonyms.forEach((s) => g.synonyms.add(s));
           }
         });
       }
-
-      // Shape B: { definition, example, synonyms }
       if (m?.definition) {
-        group.items.push({
-          definition: m.definition,
-          example: m.example || "",
-        });
+        g.items.push({ definition: m.definition, example: m.example || "" });
       }
       if (Array.isArray(m?.synonyms))
-        m.synonyms.forEach((s) => group.synonyms.add(s));
-
-      byPOS.set(pos, group);
+        m.synonyms.forEach((s) => g.synonyms.add(s));
+      byPOS.set(pos, g);
     });
-
     return Array.from(byPOS.values());
   }, [payload]);
 
   if (!word) return null;
 
   return (
-    <section aria-label="Dictionary results">
-      <header>
+    <>
+      <section className="card headword-card">
         <h2>{word}</h2>
-        <Phonetics
-          word={word}
-          phoneticText={phoneticText}
-          items={phoneticsArr}
-        />
-      </header>
+        <div className="phonetics">
+          {phoneticText ? <span>/{phoneticText}/</span> : null}
+          <Phonetics
+            word={word}
+            phoneticText={phoneticText}
+            items={phoneticsArr}
+          />
+        </div>
+      </section>
 
       {groups.map((g, i) => (
-        <Meaning key={i} group={g} />
+        <section key={i} className="card pos-card">
+          <Meaning group={g} />
+        </section>
       ))}
-
-      {sources.length > 0 && (
-        <footer>
-          <p>Source{sources.length > 1 ? "s" : ""}:</p>
-          <ul>
-            {sources.map((u, i) => (
-              <li key={i}>
-                <a href={u} target="_blank" rel="noreferrer">
-                  {u}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </footer>
-      )}
-    </section>
+    </>
   );
 }

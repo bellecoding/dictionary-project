@@ -45,13 +45,15 @@ export default function AudioButton({ src = "", text = "" }) {
 
   return (
     <>
+      // inside return:
       <button
         type="button"
+        className="audio-btn"
         onClick={playing ? stop : play}
         aria-label={playing ? "Stop pronunciation" : "Play pronunciation"}
         title={playing ? "Stop" : "Play"}
       >
-        {playing ? "⏹️ Stop" : "🔊 Play"}
+        <span className="audio-icon">🔊</span> {playing ? "Stop" : "Play"}
       </button>
       {src ? (
         <audio ref={audioRef} src={src} onEnded={() => setPlaying(false)} />

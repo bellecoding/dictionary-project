@@ -1,0 +1,119 @@
+/* ===== Neutral Sand Theme (sleek + quiet) ============================== */
+:root{
+  /* base palette */
+  --bg-1:#ece4cf;      /* sand light */
+  --bg-2:#e3d8bd;      /* sand */
+  --ink:#1f2937;       /* primary text */
+  --muted:#6b7280;     /* secondary text */
+
+  /* accents (subtle, low-sat) */
+  --accent:#8a7d5a;    /* olive-brown */
+  --accent-2:#bca67b;  /* lighter olive */
+
+  /* surfaces */
+  --card-bg:#f9f6ee;   /* paper */
+  --card-brd:rgba(15,23,42,.10);
+
+  /* focus ring */
+  --ring: color-mix(in srgb, var(--accent) 45%, white);
+}
+
+/* ===== Base ============================================================ */
+*{box-sizing:border-box}
+html,body,#root{height:100%}
+body{
+  margin:0;
+  font:16px/1.55 ui-sans-serif,system-ui,-apple-system,Inter,Segoe UI,Roboto,Arial,sans-serif;
+  color:var(--ink);
+
+  /* calm, non-aggressive background */
+  background:
+    radial-gradient(900px 360px at 50% -160px, #ffffff66, transparent 65%),
+    linear-gradient(180deg, var(--bg-1), var(--bg-2));
+}
+
+/* ===== Layout ========================================================== */
+.Shell{min-height:100%; display:flex; flex-direction:column;}
+.container{width:min(980px, 92%); margin:38px auto; display:grid; gap:20px;}
+.site-footer{width:min(980px,92%); margin:18px auto 42px; color:var(--muted);}
+.site-footer a{ color:var(--accent); text-decoration:none }
+.site-footer a:hover{ text-decoration:underline }
+
+/* ===== Cards (subtle glassy paper) ==================================== */
+.card{
+  background:var(--card-bg);
+  border:1px solid var(--card-brd);
+  backdrop-filter: blur(10px) saturate(130%);
+  -webkit-backdrop-filter: blur(10px) saturate(130%);
+  border-radius:16px;
+  box-shadow:0 12px 28px rgba(2,6,23,.14);
+  padding:20px 22px;
+  transition: transform .16s ease, box-shadow .16s ease;
+}
+.card:hover{ transform: translateY(-1px); box-shadow:0 14px 34px rgba(2,6,23,.18); }
+
+/* ===== Search ========================================================== */
+.search-card h2{
+  margin:4px 0 12px;
+  font-size:22px; letter-spacing:-.015em;
+}
+.search-row{display:flex; gap:12px;}
+.search-row input{
+  flex:1; height:50px; border-radius:12px; border:1px solid #ddd7c8; padding:0 14px; font-size:16px;
+  background:#fffdf8;
+}
+.search-row input:focus{
+  outline:none; border-color:var(--ring);
+  box-shadow:0 0 0 5px color-mix(in srgb, var(--ring) 30%, transparent);
+}
+.search-row button{
+  height:50px; padding:0 18px; border-radius:12px; border:0; cursor:pointer; color:#2a2a2a; font-weight:700;
+  background:linear-gradient(135deg, var(--accent-2), var(--accent));
+  box-shadow:0 8px 18px color-mix(in srgb, var(--accent) 25%, transparent);
+}
+.search-row button:hover{ filter:brightness(1.03) }
+
+/* hint line under input */
+.search-hint{margin-top:8px; color:var(--muted); font-size:13px}
+
+/* ===== Headword / Phonetics =========================================== */
+.headword-card h2{
+  margin:2px 0 6px;
+  font-size:40px; line-height:1.08; letter-spacing:-.02em;
+  color:#2a2a2a;          /* solid, not gradient */
+}
+.phonetics{display:flex; align-items:center; gap:10px; color:var(--muted)}
+
+/* audio button — understated pill */
+.audio-btn{
+  border:1px solid #ddd7c8; background:#fffdf8;
+  border-radius:999px; height:34px; padding:0 12px;
+  display:inline-flex; align-items:center; gap:6px; cursor:pointer; font-weight:600;
+}
+.audio-btn:hover{ border-color:var(--ring); box-shadow:0 0 0 5px color-mix(in srgb, var(--ring) 22%, transparent); }
+.audio-icon{font-size:15px}
+
+/* ===== Parts of Speech ================================================= */
+.pos-card h3{ text-transform: lowercase; font-size:20px; letter-spacing:.02em; margin:0 0 10px; color:#2c2c2c; }
+.pos-card ol{ margin:0 0 8px 18px; }
+.pos-card li+li{ margin-top:6px; }
+.example{ color:var(--muted); font-style:italic; }
+
+/* synonyms as quiet chips */
+.synonyms{ margin-top:10px; display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+.synonyms strong{ color:#2c2c2c; }
+.chip{
+  background:#f3eddc; border:1px solid #ded6c3;
+  padding:4px 10px; border-radius:999px; font-size:13px; color:#444;
+}
+
+/* divider */
+.pos-card hr{
+  border:0; height:1px; background:linear-gradient(90deg, transparent, rgba(45,45,45,.12), transparent);
+  margin:14px 0 0;
+}
+
+/* small */
+@media (max-width:520px){
+  .headword-card h2{font-size:34px}
+}

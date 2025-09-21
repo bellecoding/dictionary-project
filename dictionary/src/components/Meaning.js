@@ -8,26 +8,32 @@ export default function Meaning({ group }) {
   if (!items.length && !syns.length) return null;
 
   return (
-    <article>
+    <>
       {group?.partOfSpeech ? <h3>{group.partOfSpeech}</h3> : null}
-
       {items.length > 0 && (
         <ol>
           {items.map((d, i) => (
             <li key={i}>
               {d.definition}
               {d.example ? (
-                <div>
-                  <em>Example: “{d.example}”</em>
-                </div>
+                <div className="example">Example: “{d.example}”</div>
               ) : null}
             </li>
           ))}
         </ol>
       )}
 
-      {syns.length > 0 ? <Synonyms items={syns} /> : null}
+      {syns.length > 0 ? (
+        <div className="synonyms">
+          <strong>Similar:</strong>
+          {syns.map((s, i) => (
+            <span className="chip" key={i}>
+              {s}
+            </span>
+          ))}
+        </div>
+      ) : null}
       <hr />
-    </article>
+    </>
   );
 }
