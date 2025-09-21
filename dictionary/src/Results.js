@@ -1,6 +1,7 @@
 import React, { useMemo } from "react";
 import Phonetics from "./components/Phonetics";
 import Meaning from "./components/Meaning";
+import Gallery from "./components/Gallery"; // <-- add this
 
 export default function Results({ payload }) {
   const word = payload?.word || payload?.term || "";
@@ -62,6 +63,9 @@ export default function Results({ payload }) {
           <Meaning group={g} />
         </section>
       ))}
+
+      {/* NEW: image gallery */}
+      <Gallery query={word} />
     </>
   );
 }

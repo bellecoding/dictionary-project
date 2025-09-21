@@ -38,6 +38,11 @@ export default function App() {
 
   return (
     <div className="Shell">
+      <header className="site-header">
+      <div className="container">
+        <h1 className="brand">Dictionary</h1>
+      </div>
+    </header>
       <main className="container">
         <SearchForm defaultValue={query} onSearch={handleSearch} />
 
