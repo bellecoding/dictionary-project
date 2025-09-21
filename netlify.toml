@@ -1,0 +1,4 @@
+[build]
+base = "dictionary"
+command = "npm ci && npm run build"
+publish = "build"
