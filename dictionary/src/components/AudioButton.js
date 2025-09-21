@@ -5,18 +5,14 @@ export default function AudioButton({ src = "", text = "" }) {
   const [playing, setPlaying] = useState(false);
 
   function play() {
-    // Prefer API audio if available
-    if (src) {
+    if (src && audioRef.current) {
       const a = audioRef.current;
-      if (!a) return;
       a.currentTime = 0;
       a.play()
         .then(() => setPlaying(true))
         .catch(() => {});
       return;
     }
-
-    // Fallback: Web Speech API (browser TTS)
     if (typeof window !== "undefined" && "speechSynthesis" in window && text) {
       const utter = new SpeechSynthesisUtterance(text);
       utter.lang = "en-US";
@@ -26,9 +22,7 @@ export default function AudioButton({ src = "", text = "" }) {
         window.speechSynthesis.cancel();
         window.speechSynthesis.speak(utter);
         setPlaying(true);
-      } catch {
-        // ignore errors silently
-      }
+      } catch {}
     }
   }
 
@@ -37,15 +31,12 @@ export default function AudioButton({ src = "", text = "" }) {
       audioRef.current.pause();
       audioRef.current.currentTime = 0;
     }
-    if (typeof window !== "undefined" && "speechSynthesis" in window) {
-      window.speechSynthesis.cancel();
-    }
+    if ("speechSynthesis" in window) window.speechSynthesis.cancel();
     setPlaying(false);
   }
 
   return (
     <>
-      // inside return:
       <button
         type="button"
         className="audio-btn"

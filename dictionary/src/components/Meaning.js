@@ -1,5 +1,4 @@
 import React from "react";
-import Synonyms from "./Synonyms";
 
 export default function Meaning({ group }) {
   const items = Array.isArray(group?.items) ? group.items : [];

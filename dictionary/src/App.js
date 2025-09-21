@@ -8,7 +8,6 @@ const API_BASE = "https://api.shecodes.io/dictionary/v1/define";
 
 export default function App() {
   const [query, setQuery] = useState("");
-  const [submitted, setSubmitted] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [data, setData] = useState(null);
@@ -18,7 +17,6 @@ export default function App() {
     if (!q) return;
 
     setQuery(q);
-    setSubmitted(q);
     setLoading(true);
     setError("");
     setData(null);
